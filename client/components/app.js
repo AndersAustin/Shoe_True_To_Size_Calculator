@@ -1,0 +1,119 @@
+import React from 'react';
+import axios from 'axios';
+import InsertNewData from './insertNewData.js';
+import TrueToSizeCalc from './trueToSizeCalc.js';
+import { AppBar, Typography, Tabs, Tab  } from '@material-ui/core';
+import './styles.css';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+        URI: `http://localhost:8000`,
+        value: 0,
+        brands: [],
+        selectedBrand: '',
+        shoes: [],
+        selectedShoe: '',
+        selectedScale: ''
+    }
+  }
+
+  componentDidMount() {
+      axios.get(`${this.state.URI}/brands`)
+      .then(data => {
+          this.setState({
+              brands: data.data
+          })
+      })
+      .catch(err => {
+        //   console.error(err);
+      })
+  }
+
+  handleTabChange(event,newValue) {
+      this.setState({
+          value: newValue,
+          selectedBrand: '',
+          selectedShoe: '',
+          selectedScale: ''
+      })
+  }
+
+  handleChange(event, subject) {
+      event.preventDefault();
+      if (subject === 'brand') {
+        axios.get(`${this.state.URI}/shoes?brand_id=${event.target.value.brand_id}`)
+        .then(data => {   
+          this.setState({
+            selectedBrand: event.target.value,
+            shoes: data.data
+          })
+        })
+        .catch(err => {
+            //   console.error(err);
+          })
+      } else if (subject === 'shoe') {
+        this.setState({
+          selectedShoe: event.target.value
+        })
+      } else if (subject === 'scale') {
+        this.setState({
+          selectedScale: Number(event.target.value)
+        })
+      }
+  }
+
+  handleEntrySubmit(event) {
+      event.preventDefault();
+
+      axios.post(`${this.state.URI}/TTSEntries`, {
+          shoe_id: this.state.selectedShoe.shoe_id,
+          TTSEntry: Number(this.state.selectedScale)
+      })
+      .then(data => {
+        //   console.log(data.data)
+      })
+      .catch(err => {
+        //   console.error(err);
+      })
+  }
+
+  render() {
+    return (
+    <div>
+      <AppBar id = 'appBar' position = 'static' >               
+        <Typography id = 'appBarText' variant="h2">Shoe True To Size Calculator</Typography>
+      </AppBar>
+      <div>
+        <Tabs className = 'tabs' value = {this.state.value} onChange = {this.handleTabChange.bind(this)}>
+          <Tab label = 'Insert new data point'/>
+          <Tab label = 'Find true to size fit'/>
+        </Tabs>
+        {this.state.value === 0 && <InsertNewData 
+          selectedBrand = {this.state.selectedBrand} 
+          brands = {this.state.brands} 
+          shoes = {this.state.shoes} 
+          selectedShoe = {this.state.selectedShoe} 
+          selectedScale = {this.state.selectedScale} 
+          handleChange = {this.handleChange.bind(this)}
+          handleEntrySubmit = {this.handleEntrySubmit.bind(this)}
+        />}
+        {this.state.value === 1 && <TrueToSizeCalc 
+          selectedBrand = {this.state.selectedBrand} 
+          brands = {this.state.brands} 
+          shoes = {this.state.shoes} 
+          URI = {this.state.URI}
+          selectedShoe = {this.state.selectedShoe} 
+          handleChange = {this.handleChange.bind(this)}
+          handleTabChange = {this.handleTabChange.bind(this)}
+        />}    
+      </div>
+    </div>
+    )
+  }
+}
+
+
+export default App;

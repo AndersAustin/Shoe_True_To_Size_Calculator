@@ -54,13 +54,17 @@ const getTTSEntriesByShoe = (shoe_id, cb) => {
 
 //inserts a new record into the true_to_size_entries database based on what is selected in app, will run when submit is clicked
 const PostTTSEntriesByShoe = (shoe_id, TTSEntry, cb) => {
-  pool.query(`INSERT INTO true_to_size_entries (shoe_id, true_to_size_entry) VALUES ($1, $2);`, [shoe_id, TTSEntry], (err, data) => {
-      if (err) {
-        cb(err);
-      } else {
-        cb(null, data);
-      }
-    });
+  if (![1,2,3,4,5].includes(TTSEntry)) {
+    cb('error')
+  } else {
+    pool.query(`INSERT INTO true_to_size_entries (shoe_id, true_to_size_entry) VALUES ($1, $2);`, [shoe_id, TTSEntry], (err, data) => {
+        if (err) {
+          cb(err);
+        } else {
+          cb(null, data);
+        }
+      });
+  }
 };
 
 module.exports = { getAllBrands, getShoesByBrand, getTTSEntriesByShoe, PostTTSEntriesByShoe };

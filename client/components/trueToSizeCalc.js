@@ -16,20 +16,24 @@ class trueToSizeCalc extends React.Component {
 
   handleCalculate(event) {
     event.preventDefault();
-    axios.get(`${this.props.URI}/TTSEntries?shoe_id=${this.props.selectedShoe.shoe_id}`)
+    axios.get(`${this.props.URI}/TTSAverages?shoe_id=${this.props.selectedShoe.shoe_id}`)
     .then(data => {
       //if there are no data points return a string
       if (!data.data[0].sum) {
         this.setState({
           calculatedValue: `There isn't any data for this shoe yet!`,
           calculated: true,
-          calculateAttempted: false
+          calculateAttempted: false,
+        }, () => {
+          this.props.handleClearShoes()
         })
       } else {
         this.setState({
           calculatedValue: Number(data.data[0].sum) / Number(data.data[0].count),
           calculated: true,
           calculateAttempted: false
+        }, () => {
+          this.props.handleClearShoes()
         })
       }
     })
@@ -90,6 +94,7 @@ class trueToSizeCalc extends React.Component {
       </FormControl>
     )
 
+    //conditional statement that will show the result of the calculation if the calculate button has been pressed, or the input forms if it has not/retried
     if (this.state.calculated) {
       output = (
         <Typography variant= 'h3'>

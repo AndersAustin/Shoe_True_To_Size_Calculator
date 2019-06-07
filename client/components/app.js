@@ -40,7 +40,8 @@ class App extends React.Component {
           value: newValue,
           selectedBrand: '',
           selectedShoe: '',
-          selectedScale: ''
+          selectedScale: '',
+          submitAttempted: false
       })
   }
 
@@ -83,7 +84,8 @@ class App extends React.Component {
           selectedBrand: '',
           selectedShoe: '',
           selectedScale: '',
-          submitAttempted: false
+          submitAttempted: false,
+          shoes: []
         })
       })
       .catch(err => {
@@ -92,6 +94,13 @@ class App extends React.Component {
           submitAttempted: true
         })
       })
+  }
+
+  //used to clear the shoes state object after average is calculated
+  handleClearShoes() {
+    this.setState({
+      shoes: []
+    })
   }
 
   render() {
@@ -123,6 +132,7 @@ class App extends React.Component {
           selectedShoe = {this.state.selectedShoe} 
           handleChange = {this.handleChange.bind(this)}
           handleTabChange = {this.handleTabChange.bind(this)}
+          handleClearShoes = {this.handleClearShoes.bind(this)}
         />}    
       </div>
     </div>

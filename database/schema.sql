@@ -44,7 +44,6 @@ INSERT INTO brands (brand_name) VALUES
   ('Adidas'),
   ('Nike'),
   ('Under Armour'),
-  ('New Balance'),
   ('Puma');
 
 INSERT INTO shoes (brand_id, shoe_name) VALUES 

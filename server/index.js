@@ -10,7 +10,7 @@ app.use(express.static('dist'));
 app.get(`/brands`, (req, res) => {
   db.getAllBrands((err, data) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
       res.status(403).end();
     } else {
       // console.log(data);
@@ -23,7 +23,7 @@ app.get(`/shoes`, (req, res) => {
   const brand_id = req.query.brand_id
   db.getShoesByBrand(brand_id, (err, data) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
       res.status(403).end();
     } else {
       // console.log(data);
@@ -36,12 +36,12 @@ app.post(`/TTSEntries`, (req, res) => {
   const shoe_id = req.body.shoe_id
   const TTSEntry = req.body.TTSEntry
 
-  if (shoe_id === '' || TTSEntry === 0) {
+  if (!shoe_id || TTSEntry === 0) {
     res.status(400).end();
   } else {
     db.PostTTSEntriesByShoe(shoe_id, TTSEntry, (err, data) => {
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.status(403).end();
       } else {
         res.end();
@@ -50,14 +50,14 @@ app.post(`/TTSEntries`, (req, res) => {
   }
 });
 
-app.get(`/TTSEntries`, (req, res) => {
+app.get(`/TTSAverages`, (req, res) => {
     const shoe_id = req.query.shoe_id
     if (shoe_id === 'undefined') {
         res.status(400).end();
     } else {
       db.getTTSEntriesByShoe(shoe_id, (err, data) => {
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.status(403).end();
         } else {
           // console.log(data);

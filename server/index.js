@@ -6,6 +6,7 @@ app.use(express.json({urlencoded: true}));
 
 app.use(express.static('dist'));
 
+
 app.get(`/brands`, (req, res) => {
   db.getAllBrands((err, data) => {
     if (err) {

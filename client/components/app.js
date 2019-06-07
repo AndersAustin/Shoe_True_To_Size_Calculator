@@ -16,10 +16,12 @@ class App extends React.Component {
         selectedBrand: '',
         shoes: [],
         selectedShoe: '',
-        selectedScale: ''
+        selectedScale: '',
+        submitAttempted: false
     }
   }
 
+  //Get all brands so that the drop down menus will be populated (for brand)
   componentDidMount() {
       axios.get(`${this.state.URI}/brands`)
       .then(data => {
@@ -32,6 +34,7 @@ class App extends React.Component {
       })
   }
 
+  //Handle the changes in the tabs
   handleTabChange(event,newValue) {
       this.setState({
           value: newValue,
@@ -41,6 +44,7 @@ class App extends React.Component {
       })
   }
 
+  //This is a reused function for whenever a drop down is selected and the value is changed, using a second hardcoded argument based on which dropdown
   handleChange(event, subject) {
       event.preventDefault();
       if (subject === 'brand') {
@@ -65,6 +69,7 @@ class App extends React.Component {
       }
   }
 
+  //This runs when the submit button is clicked on the first tab
   handleEntrySubmit(event) {
       event.preventDefault();
 
@@ -74,9 +79,18 @@ class App extends React.Component {
       })
       .then(data => {
         //   console.log(data.data)
+        this.setState({
+          selectedBrand: '',
+          selectedShoe: '',
+          selectedScale: '',
+          submitAttempted: false
+        })
       })
       .catch(err => {
         //   console.error(err);
+        this.setState({
+          submitAttempted: true
+        })
       })
   }
 
@@ -99,6 +113,7 @@ class App extends React.Component {
           selectedScale = {this.state.selectedScale} 
           handleChange = {this.handleChange.bind(this)}
           handleEntrySubmit = {this.handleEntrySubmit.bind(this)}
+          submitAttempted = {this.state.submitAttempted}
         />}
         {this.state.value === 1 && <TrueToSizeCalc 
           selectedBrand = {this.state.selectedBrand} 

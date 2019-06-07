@@ -1,6 +1,13 @@
+--Clear out what exists in the database for fresh start
 DROP DATABASE IF EXISTS shoe_true_size;
+
+--Create/Recreate database
 create database shoe_true_size;
+
+--Connect to created database
 \c shoe_true_size; 
+
+--Create the tables
 
 CREATE TABLE brands (
   brand_id SERIAL PRIMARY KEY,
@@ -22,9 +29,7 @@ CREATE TABLE true_to_size_entries (
   created_at TIMESTAMP
 );
 
-CREATE INDEX idx_shoe_name
-ON shoes(shoe_name);
-
+--Create defaults for the created_at columns to be when they are created
 ALTER TABLE brands
 ALTER COLUMN created_at SET DEFAULT NOW();
 
@@ -34,6 +39,7 @@ ALTER COLUMN created_at SET DEFAULT NOW();
 ALTER TABLE true_to_size_entries
 ALTER COLUMN created_at SET DEFAULT NOW();
 
+--Insert dummy data into the database
 INSERT INTO brands (brand_name) VALUES 
   ('Adidas'),
   ('Nike'),

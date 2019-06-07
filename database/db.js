@@ -4,7 +4,7 @@ require("dotenv").config();
 //instantiate the database connection
 const pool = new Pool({
   user: process.env.DB_USER,
-  host: 'localhost',
+  host: process.env.DB_HOST,
   database: 'shoe_true_size',
   password: process.env.DB_PASS,
   port: 5432

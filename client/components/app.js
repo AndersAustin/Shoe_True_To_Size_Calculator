@@ -10,7 +10,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-        URI: `http://localhost:8000`,
+        URI: `http://3.17.75.37`,
         value: 0,
         brands: [],
         selectedBrand: '',

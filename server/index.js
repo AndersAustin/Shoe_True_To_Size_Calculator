@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
 const db = require('../database/db.js');
+const CORS = require('cors');
 
 app.use(express.json({urlencoded: true}));
-
+app.use(CORS())
 app.use(express.static('dist'));
 
 

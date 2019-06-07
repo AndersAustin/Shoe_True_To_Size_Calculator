@@ -36,4 +36,4 @@ node_modules
 .env
 
 #dist
-dist
+dist/bundle.js
